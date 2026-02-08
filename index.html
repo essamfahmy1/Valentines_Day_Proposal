@@ -1,46 +1,119 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="stylesheet" href="./Styles/styles.css">
-    <script src="./script.js" defer></script>
-    <style>
-        /* Add your existing styles here */
-
-        /* Additional style for the note */
-        .made-with-love {
-            position: fixed;
-            bottom: 10px; /* Adjust this value to move it closer to the bottom */
-            left: 50%;
-            transform: translateX(-50%);
-            text-align: center;
-            color: #777;
-        }
-
-        .github-link {
-            color: #3498db;
-            text-decoration: none;
-            font-weight: bold;
-        }
-    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>💕 How Much Do You Like Me? 💕</title>
+    <link rel="stylesheet" href="./Styles/lovemeter.css">
 </head>
 <body>
+    <!-- Floating hearts background -->
+    <div class="floating-elements"></div>
+
+    <!-- Love Meter Section -->
     <div class="container">
         <div>
-            <h1 class="header_text">Will you be my valentine? hehe</h1>
+            <h1 class="header_text">💕 Julia... 💕</h1>
+            <h2 class="subheader_text">How much do you like me?</h2>
         </div>
-        <div class="gif_container">
-            <img src="https://64.media.tumblr.com/44437aaa3af65ef5b5dc25b2cf1e81d1/6acc7d78ea83e207-45/s400x600/5b30035952803850ed3136fbe760ceff97ee8d19.gif" alt="Cute animated illustration">
+        <div class="love-meter">
+            <input type="range" min="0" max="10000" value="100" class="slider" id="loveMeter">
+            <p>
+                <span class="love-value-container">
+                    <span id="startText">My liking for Essam</span> 
+                    (<span id="loveValue">100</span>%)
+                </span>
+                <span id="extraLove" class="hidden"></span>
+            </p>
         </div>
-        <div class="buttons">
-            <button class="btn" id="yesButton" onclick="nextPage()">Yes</button>
-            <button class="btn" id="noButton" onmouseover="moveButton()">No</button>
-        </div>
-
-        <!-- Positioned closer to the bottom with GitHub link -->
-        <p class="made-with-love">
-            Made with love and a sprinkle of creativity by Prateek 💖✨. 
-            <a href="https://github.com/KanurkarPrateek/Valentines_Day_Proposal" class="github-link" target="_blank">⭐Star the repo on GitHub</a>.
-        </p>
+        <button class="btn next-btn hidden" id="nextBtn" onclick="goToValentineQuestion()">Continue to my question... 💝</button>
     </div>
+
+    <script>
+        // Love messages for different meter values
+        const loveMessages = {
+            normal: "Aww, that's sweet! 💕",
+            high: "Wow, that's a LOT of liking! 💖💖",
+            extreme: "INFINITE LIKING DETECTED!!! 💗💗💗✨"
+        };
+
+        // Threshold to show the next button (must reach at least this value)
+        const LOVE_THRESHOLD = 5000;
+
+        // Navigate to the Valentine question page
+        function goToValentineQuestion() {
+            window.location.href = "question.html";
+        }
+
+        // Initialize love meter functionality
+        function initLoveMeter() {
+            const loveMeter = document.getElementById('loveMeter');
+            const loveValue = document.getElementById('loveValue');
+            const extraLove = document.getElementById('extraLove');
+            const nextBtn = document.getElementById('nextBtn');
+
+            // Set initial position
+            loveMeter.value = 100;
+            loveValue.textContent = 100;
+
+            loveMeter.addEventListener('input', () => {
+                const value = parseInt(loveMeter.value);
+                loveValue.textContent = value;
+                
+                // Show/hide the next button based on threshold
+                if (value >= LOVE_THRESHOLD) {
+                    nextBtn.classList.remove('hidden');
+                } else {
+                    nextBtn.classList.add('hidden');
+                }
+                
+                if (value > 100) {
+                    extraLove.classList.remove('hidden');
+                    const overflowPercentage = (value - 100) / 9900;
+                    const extraWidth = overflowPercentage * window.innerWidth * 0.5;
+                    loveMeter.style.width = `calc(100% + ${extraWidth}px)`;
+                    loveMeter.style.transition = 'width 0.3s';
+                    
+                    // Show different messages based on the value
+                    if (value >= 5000) {
+                        extraLove.classList.add('super-love');
+                        extraLove.textContent = loveMessages.extreme;
+                    } else if (value > 1000) {
+                        extraLove.classList.remove('super-love');
+                        extraLove.textContent = loveMessages.high;
+                    } else {
+                        extraLove.classList.remove('super-love');
+                        extraLove.textContent = loveMessages.normal;
+                    }
+                } else {
+                    extraLove.classList.add('hidden');
+                    extraLove.classList.remove('super-love');
+                    loveMeter.style.width = '100%';
+                }
+            });
+        }
+
+        // Create floating hearts
+        function createFloatingElements() {
+            const container = document.querySelector('.floating-elements');
+            const hearts = ['💕', '💖', '💗', '💓', '💞', '💝', '❤️', '🧸'];
+            
+            for (let i = 0; i < 15; i++) {
+                const div = document.createElement('div');
+                div.className = 'floating-heart';
+                div.innerHTML = hearts[Math.floor(Math.random() * hearts.length)];
+                div.style.left = Math.random() * 100 + 'vw';
+                div.style.animationDelay = Math.random() * 5 + 's';
+                div.style.animationDuration = (10 + Math.random() * 20) + 's';
+                container.appendChild(div);
+            }
+        }
+
+        // Initialize everything when DOM is loaded
+        window.addEventListener('DOMContentLoaded', () => {
+            initLoveMeter();
+            createFloatingElements();
+        });
+    </script>
 </body>
 </html>
