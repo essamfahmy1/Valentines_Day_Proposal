@@ -4,6 +4,39 @@ body {
     align-items: center;
     height: 100vh;
     background-color: #CBE6EF;
+    overflow: hidden;
+    margin: 0;
+}
+
+/* Floating elements container */
+.floating-elements {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+}
+
+.floating-heart {
+    position: absolute;
+    font-size: 2rem;
+    animation: float 15s linear infinite;
+    opacity: 0.8;
+}
+
+@keyframes float {
+    0% {
+        transform: translateY(100vh) rotate(0deg);
+    }
+    100% {
+        transform: translateY(-100px) rotate(360deg);
+    }
+}
+
+.container {
+    z-index: 1;
+    position: relative;
 }
 
 /* Position the "No" button absolutely within body */

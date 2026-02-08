@@ -7,6 +7,9 @@
     <!-- Include any additional stylesheets or meta tags here -->
 </head>
 <body>
+    <!-- Floating hearts background -->
+    <div class="floating-elements"></div>
+
     <div class="container">
         <div>
             <h1 class="header_text">Yay!!!!!</h1>
@@ -17,5 +20,25 @@
         <!-- Adjusted position of the text element by 100px -->
         <p class="text">See you on February 14th!</p>
     </div>
+
+    <script>
+        // Create floating hearts
+        function createFloatingElements() {
+            const container = document.querySelector('.floating-elements');
+            const hearts = ['💕', '💖', '💗', '💓', '💞', '💝', '❤️', '🧸', '✨', '🎉'];
+            
+            for (let i = 0; i < 20; i++) {
+                const div = document.createElement('div');
+                div.className = 'floating-heart';
+                div.innerHTML = hearts[Math.floor(Math.random() * hearts.length)];
+                div.style.left = Math.random() * 100 + 'vw';
+                div.style.animationDelay = Math.random() * 5 + 's';
+                div.style.animationDuration = (10 + Math.random() * 20) + 's';
+                container.appendChild(div);
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', createFloatingElements);
+    </script>
 </body>
 </html>
